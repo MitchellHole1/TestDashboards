@@ -10,5 +10,5 @@ public interface ITestResultService
     Task<SaveTestResultResponse> UpdateAsync(int id, TestResult testResult);
     Task<IEnumerable<TestResult>> ListByTestRunAsync(int id);
     Task<SaveTestResultResponse> DeleteAsync(int id);
-
+    Task<SaveTestResultResponse> SaveTestResultBugAsync(TestResultBug testResultBug);
 }

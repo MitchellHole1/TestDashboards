@@ -71,4 +71,21 @@ public class TestResultController : Controller
 
         return NoContent();
     }
+    
+    [HttpPost("{id}/testbug")]
+    public async Task<IActionResult> PostTestBugAsync(int id, [FromBody] SaveTestResultBugResource resource)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
+        
+        var testResultBug = _mapper.Map<TestResultBug>(resource);
+        testResultBug.TestResultId = id;
+        var result = await _testResultService.SaveTestResultBugAsync(testResultBug);
+
+        if (!result.Success)
+            return BadRequest(result.Message);
+
+        var testResultResource = _mapper.Map<TestResult, TestResultResource>(result.TestResult);
+        return Ok(testResultResource);
+    }
 }

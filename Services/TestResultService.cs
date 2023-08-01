@@ -8,17 +8,19 @@ namespace TestDashboard.Services;
 public class TestResultService : ITestResultService
 {
     private readonly ITestResultRepository _testResultRepository;
+    private readonly ITestResultBugService _testResultBugService;
     private readonly ITestRunRepository _testRunRepository;
     private readonly ITestCaseRepository _testCaseRepository;
 
     private readonly IUnitOfWork _unitOfWork;
 
     public TestResultService(ITestResultRepository testResultRepository, ITestRunRepository testRunRepository,
-        ITestCaseRepository testCaseRepository, IUnitOfWork unitOfWork)
+        ITestCaseRepository testCaseRepository, ITestResultBugService testResultBugService, IUnitOfWork unitOfWork)
     {
         _testResultRepository = testResultRepository;
         _testRunRepository = testRunRepository;
         _testCaseRepository = testCaseRepository;
+        _testResultBugService = testResultBugService;
         _unitOfWork = unitOfWork;
     }
     
@@ -108,4 +110,25 @@ public class TestResultService : ITestResultService
     {
         return await _testResultRepository.FindByTestRunId(id);
     }
+
+    public async Task<SaveTestResultResponse> SaveTestResultBugAsync(TestResultBug testResultBug)
+    {
+        try
+        {
+            var existingTestResult = await _testResultRepository.FindByIdAsync(testResultBug.TestResultId);
+            if (existingTestResult == null)
+                return new SaveTestResultResponse("Invalid testrun.");
+
+            await _testResultBugService.SaveAsync(testResultBug);
+            await _unitOfWork.CompleteAsync();
+			
+            return new SaveTestResultResponse(existingTestResult);
+        }
+        catch (Exception ex)
+        {
+            // Do some logging stuff
+            return new SaveTestResultResponse($"An error occurred when adding the testbug: {ex.Message}");
+        }
+    }
+    
 }

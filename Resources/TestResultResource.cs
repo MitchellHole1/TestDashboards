@@ -9,5 +9,5 @@ public class TestResultResource
     public int Duration { get; set; }
     public TestRunResource TestRun { get; set; }
     public TestCaseResource TestCase { get; set; }
-    public IList<TestBugResource> TestBugs { get; set; }
+    public IList<TestResultBugResource> TestResultBugs { get; set; }
 }

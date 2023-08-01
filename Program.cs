@@ -27,6 +27,8 @@ builder.Services.AddScoped<ITestResultRepository, TestResultRepository>();
 builder.Services.AddScoped<ITestResultService, TestResultService>();
 builder.Services.AddScoped<ITestBugRepository, TestBugRepository>();
 builder.Services.AddScoped<ITestBugService, TestBugService>();
+builder.Services.AddScoped<ITestResultBugRepository, TestResultBugRepository>();
+builder.Services.AddScoped<ITestResultBugService, TestResultBugService>();
 builder.Services.AddScoped<ITestMediaRepository, TestMediaRepository>();
 builder.Services.AddScoped<ITestMediaService, TestMediaService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

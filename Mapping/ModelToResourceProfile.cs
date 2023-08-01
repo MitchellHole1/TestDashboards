@@ -13,5 +13,6 @@ public class ModelToResourceProfile : Profile
         CreateMap<TestCase, TestCaseResource>();
         CreateMap<TestResult, TestResultResource>();
         CreateMap<TestBug, TestBugResource>();
+        CreateMap<TestResultBug, TestResultBugResource>();
     }
 }

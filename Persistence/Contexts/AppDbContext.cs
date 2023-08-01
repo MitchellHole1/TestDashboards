@@ -9,6 +9,8 @@ public class AppDbContext : DbContext
     public DbSet<TestCase> TestCases { get; set; }
     public DbSet<TestResult> TestResults { get; set; }
     public DbSet<TestBug> TestBugs { get; set; }
+    
+    public DbSet<TestResultBug> TestResultBugs { get; set; }
     public DbSet<TestMedia> TestMedia { get; set; }
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
@@ -52,7 +54,7 @@ public class AppDbContext : DbContext
         builder.Entity<TestResult>().HasKey(p => p.Id);
         builder.Entity<TestResult>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<TestResult>().Property(p => p.Passed).IsRequired();
-        builder.Entity<TestResult>().HasMany(p => p.TestBugs).WithOne(p => p.TestResult).HasForeignKey(p => p.TestResultId);
+        builder.Entity<TestResult>().HasMany(p => p.TestResultBugs).WithOne(p => p.TestResult).HasForeignKey(p => p.TestResultId);
         builder.Entity<TestResult>().HasMany(p => p.TestMedia).WithOne(p => p.TestResult).HasForeignKey(p => p.TestResultId);
         builder.Entity<TestResult>().HasIndex(p => new {p.TestRunId, p.TestCaseId}).IsUnique();
 
@@ -75,10 +77,22 @@ public class AppDbContext : DbContext
         builder.Entity<TestBug>().ToTable("TestBugs");
         builder.Entity<TestBug>().HasKey(p => p.Id);
         builder.Entity<TestBug>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-
+        builder.Entity<TestBug>().HasMany(p => p.TestResultBugs).WithOne(p => p.TestBug).HasForeignKey(p => p.TestBugId);
+        
         builder.Entity<TestBug>().HasData
         (
-            new TestBug() { Id = 1, TestResultId = 4, Link = "google.ca"}
+            new TestBug() { Id = 1, Link = "https://google.ca"},
+            new TestBug() { Id = 2, Link = "https://google2.ca"}
+        );
+        
+        builder.Entity<TestResultBug>().ToTable("TestResultBugs");
+        builder.Entity<TestResultBug>().HasKey(p => p.Id);
+        builder.Entity<TestResultBug>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        
+        builder.Entity<TestResultBug>().HasData
+        (
+            new TestResultBug() { Id = 1, TestResultId = 4, TestBugId = 1},
+            new TestResultBug() { Id = 2, TestResultId = 4, TestBugId = 2}
         );
 
         builder.Entity<TestMedia>().ToTable("TestMedia");

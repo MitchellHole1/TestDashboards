@@ -8,14 +8,12 @@ namespace TestDashboard.Services;
 public class TestBugService : ITestBugService
 {
     private readonly ITestBugRepository _testBugRepository;
-    private readonly ITestResultRepository _testResultRepository;
     
     private readonly IUnitOfWork _unitOfWork;
 
-    public TestBugService(ITestBugRepository testBugRepository, ITestResultRepository testResultRepository, IUnitOfWork unitOfWork)
+    public TestBugService(ITestBugRepository testBugRepository, IUnitOfWork unitOfWork)
     {
         _testBugRepository = testBugRepository;
-        _testResultRepository = testResultRepository;
         _unitOfWork = unitOfWork;
     }
     
@@ -28,10 +26,6 @@ public class TestBugService : ITestBugService
     {
         try
         {
-            var existingTestResult = await _testResultRepository.FindByIdAsync(testBug.TestResultId);
-            if (existingTestResult == null)
-                return new SaveTestBugResponse("Invalid testresult.");
-            
             await _testBugRepository.AddAsync(testBug);
             await _unitOfWork.CompleteAsync();
 			

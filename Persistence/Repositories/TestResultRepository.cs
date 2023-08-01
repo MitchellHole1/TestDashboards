@@ -13,7 +13,7 @@ public class TestResultRepository: BaseRepository, ITestResultRepository
 
     public async Task<IEnumerable<TestResult>> ListAsync()
     {
-        return await _context.TestResults.Include(p => p.TestBugs).Include(p => p.TestRun).Include(p => p.TestCase).ToListAsync();
+        return await _context.TestResults.Include(p => p.TestResultBugs).ThenInclude(q => q.TestBug).Include(p => p.TestRun).Include(p => p.TestCase).ToListAsync();
     }
     
     public async Task AddAsync(TestResult testResult)

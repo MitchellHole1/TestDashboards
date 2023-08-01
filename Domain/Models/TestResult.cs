@@ -12,6 +12,6 @@ public class TestResult
     public int TestCaseId { get; set; }
     public TestCase TestCase { get; set; }
     
-    public IList<TestBug> TestBugs { get; set; } = new List<TestBug>();
+    public IList<TestResultBug> TestResultBugs { get; set; } = new List<TestResultBug>();
     public IList<TestMedia> TestMedia { get; set; } = new List<TestMedia>();
 }
