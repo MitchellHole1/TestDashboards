@@ -13,5 +13,6 @@ public class ResourceToModelProfile : Profile
         CreateMap<SaveTestResultResource, TestResult>();
         CreateMap<SaveTestBugResource, TestBug>();
         CreateMap<SaveTestResultBugResource, TestResultBug>();
+        CreateMap<QueryResource, Query>();
     }  
 }

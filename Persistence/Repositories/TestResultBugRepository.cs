@@ -14,4 +14,14 @@ public class TestResultBugRepository : BaseRepository, ITestResultBugRepository
     {
         await _context.TestResultBugs.AddAsync(testResultBug);
     }
+    
+    public async Task<TestResultBug> FindByIdAsync(int id)
+    {
+        return await _context.TestResultBugs.FindAsync(id);
+    }
+
+    public void Remove(TestResultBug testResultBug)
+    {
+        _context.TestResultBugs.Remove(testResultBug);
+    }
 }

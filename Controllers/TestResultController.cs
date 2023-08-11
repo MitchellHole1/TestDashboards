@@ -29,6 +29,21 @@ public class TestResultController : Controller
         return resources;
     }
     
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAsync(int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
+
+        var result = await _testResultService.GetByIdAsync(id);
+
+        if (!result.Success)
+            return BadRequest(result.Message);
+
+        var testResultResource = _mapper.Map<TestResult, TestResultResource>(result.TestResult);
+        return Ok(testResultResource);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> PostAsync([FromBody] SaveTestResultResource resource)
     {
@@ -87,5 +102,18 @@ public class TestResultController : Controller
 
         var testResultResource = _mapper.Map<TestResult, TestResultResource>(result.TestResult);
         return Ok(testResultResource);
+    }
+
+    [HttpDelete("{testResultId}/testbug/{testBugId}")]
+    public async Task<IActionResult> DeleteTestBugAsync(int testResultId, int testBugId)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
+        
+        var result = await _testResultService.DeleteTestResultBugAsync(testResultId, testBugId);
+        if (!result.Success)
+            return BadRequest(result.Message);
+        
+        return NoContent();
     }
 }

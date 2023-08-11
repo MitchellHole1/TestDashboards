@@ -17,7 +17,7 @@ public class TestRunService : ITestRunService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<TestRun>> ListAsync()
+    public async Task<IEnumerable<TestRun>> ListAsync(Query q)
     {
         return await _testRunRepository.ListAsync();
     }

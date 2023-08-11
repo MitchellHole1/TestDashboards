@@ -1,8 +1,7 @@
 namespace TestDashboard.Domain.Models;
 
-public class TestRun
-{
-    public int Id { get; set; }
+public class TestRun : AuditableEntity
+{ 
     public string Build { get; set; }
     public string Link { get; set; }
     public string TestType { get; set; }

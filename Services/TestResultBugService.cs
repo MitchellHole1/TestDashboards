@@ -23,4 +23,25 @@ public class TestResultBugService : ITestResultBugService
 			
         return testResultBug;
     }
+    
+    public async Task<TestResultBug> DeleteAsync(int testResultBugId)
+    {
+        try
+        {
+            var existingTestResultBug = await _testResultBugRepository.FindByIdAsync(testResultBugId);
+            if (existingTestResultBug == null)
+            {
+                return null;
+            }
+            
+            _testResultBugRepository.Remove(existingTestResultBug);
+            await _unitOfWork.CompleteAsync();
+            return existingTestResultBug;
+        }
+        catch (Exception ex)
+        {
+            // Do some logging stuff
+            return null;
+        }
+    }
 }

@@ -6,7 +6,7 @@ namespace TestDashboard.Domain.Services;
 
 public interface ITestRunService
 {
-    Task<IEnumerable<TestRun>> ListAsync();
+    Task<IEnumerable<TestRun>> ListAsync(Query q);
     Task<SaveTestRunResponse> SaveAsync(TestRun testRun);
     Task<SaveTestRunResponse> UpdateAsync(int id, TestRun testRun);
 }

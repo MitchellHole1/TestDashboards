@@ -13,7 +13,7 @@ public class TestRunRepository: BaseRepository, ITestRunRepository
 
     public async Task<IEnumerable<TestRun>> ListAsync()
     {
-        return await _context.TestRuns.ToListAsync();
+        return await _context.TestRuns.OrderByDescending(i => i.Id).Take(20).ToListAsync();
     }
     
     public async Task<TestRun> FindByIdAsync(int id)

@@ -13,7 +13,7 @@ public class TestResultRepository: BaseRepository, ITestResultRepository
 
     public async Task<IEnumerable<TestResult>> ListAsync()
     {
-        return await _context.TestResults.Include(p => p.TestResultBugs).ThenInclude(q => q.TestBug).Include(p => p.TestRun).Include(p => p.TestCase).ToListAsync();
+        return await _context.TestResults.OrderByDescending(i => i.TestRunId).Include(p => p.TestResultBugs).ThenInclude(q => q.TestBug).Include(p => p.TestRun).Include(p => p.TestCase).ToListAsync();
     }
     
     public async Task AddAsync(TestResult testResult)
@@ -23,7 +23,7 @@ public class TestResultRepository: BaseRepository, ITestResultRepository
     
     public async Task<TestResult> FindByIdAsync(int id)
     {
-        return await _context.TestResults.FindAsync(id);
+        return await _context.TestResults.Include(p => p.TestResultBugs).ThenInclude(q => q.TestBug).FirstOrDefaultAsync(i => i.Id == id);
     }
     
     public void Update(TestResult testResult)
@@ -33,7 +33,7 @@ public class TestResultRepository: BaseRepository, ITestResultRepository
     
     public async Task<IEnumerable<TestResult>> FindByTestRunId(int testRunId)
     {
-        return await _context.TestResults.Where(p => p.TestRun.Id == testRunId).Include(p => p.TestCase).ToListAsync();
+        return await _context.TestResults.Where(p => p.TestRun.Id == testRunId).Include(p => p.TestCase).Include(p => p.TestResultBugs).ThenInclude(q => q.TestBug).ToListAsync();
     }
     
     public void Remove(TestResult testResult)

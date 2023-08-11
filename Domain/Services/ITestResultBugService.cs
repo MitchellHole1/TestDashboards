@@ -5,4 +5,5 @@ namespace TestDashboard.Domain.Services;
 public interface ITestResultBugService
 {
     Task<TestResultBug> SaveAsync(TestResultBug testResultBug);
+    Task<TestResultBug> DeleteAsync(int testResultBugId);
 }

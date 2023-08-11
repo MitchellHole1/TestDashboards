@@ -24,9 +24,11 @@ public class TestRunController : Controller
     }
     
     [HttpGet]
-    public async Task<IEnumerable<TestRunResource>> GetAllAsync()
+    public async Task<IEnumerable<TestRunResource>> GetAllAsync([FromQuery] QueryResource testRunQuery)
     {
-        var testRuns = await _testRunService.ListAsync();
+        var query = _mapper.Map<Query>(testRunQuery);
+
+        var testRuns = await _testRunService.ListAsync(query);
         var resources = _mapper.Map<IEnumerable<TestRun>, IEnumerable<TestRunResource>>(testRuns);
 
         return resources;

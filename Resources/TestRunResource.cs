@@ -7,4 +7,5 @@ public class TestRunResource
     public string Link { get; set; }
     public string TestType { get; set; }
     public int Duration { get; set; }
+    public DateTime Created { get; set; }
 }

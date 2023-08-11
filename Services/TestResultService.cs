@@ -29,6 +29,16 @@ public class TestResultService : ITestResultService
         return await _testResultRepository.ListAsync();
     }
     
+    public async Task<SaveTestResultResponse> GetByIdAsync(int id)
+    {
+        var existingTestResult = await _testResultRepository.FindByIdAsync(id);
+
+        if (existingTestResult == null)
+            return new SaveTestResultResponse("Testresult not found.");
+        
+        return new SaveTestResultResponse(existingTestResult);
+    }
+    
     public async Task<SaveTestResultResponse> SaveAsync(TestResult testResult)
     {
         try
@@ -59,14 +69,6 @@ public class TestResultService : ITestResultService
 
         if (existingTestResult == null)
             return new SaveTestResultResponse("Testresult not found.");
-        
-        var existingTestRun = await _testRunRepository.FindByIdAsync(testResult.TestRunId);
-        if (existingTestRun == null)
-            return new SaveTestResultResponse("Invalid testrun.");
-            
-        var existingTestCase = await _testCaseRepository.FindByIdAsync(testResult.TestCaseId);
-        if (existingTestCase == null)
-            return new SaveTestResultResponse("Invalid testcase.");
 
         existingTestResult.Duration = testResult.Duration;
         existingTestResult.Passed = testResult.Passed;
@@ -117,11 +119,31 @@ public class TestResultService : ITestResultService
         {
             var existingTestResult = await _testResultRepository.FindByIdAsync(testResultBug.TestResultId);
             if (existingTestResult == null)
-                return new SaveTestResultResponse("Invalid testrun.");
+                return new SaveTestResultResponse("Invalid testresult.");
 
             await _testResultBugService.SaveAsync(testResultBug);
             await _unitOfWork.CompleteAsync();
 			
+            return new SaveTestResultResponse(existingTestResult);
+        }
+        catch (Exception ex)
+        {
+            // Do some logging stuff
+            return new SaveTestResultResponse($"An error occurred when adding the testbug: {ex.Message}");
+        }
+    }
+    
+    public async Task<SaveTestResultResponse> DeleteTestResultBugAsync(int testResultId, int testBugId)
+    {
+        try
+        {
+            var existingTestResult = await _testResultRepository.FindByIdAsync(testResultId);
+            if (existingTestResult == null)
+                return new SaveTestResultResponse("Invalid testresult.");
+            
+            TestResultBug testResultBug = await _testResultBugService.DeleteAsync(testBugId);
+            if (testResultBug == null)
+                return new SaveTestResultResponse("Invalid testresultbug.");
             return new SaveTestResultResponse(existingTestResult);
         }
         catch (Exception ex)

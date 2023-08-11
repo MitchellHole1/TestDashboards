@@ -1,9 +1,7 @@
 namespace TestDashboard.Domain.Models;
 
-public class TestResultBug
+public class TestResultBug : AuditableEntity
 {
-    public int Id { get; set; }
-    
     public int TestResultId { get; set; }
     public TestResult TestResult { get; set; }
     
