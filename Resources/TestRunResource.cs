@@ -6,6 +6,6 @@ public class TestRunResource
     public string Build { get; set; }
     public string Link { get; set; }
     public string TestType { get; set; }
-    public int Duration { get; set; }
+    public double Duration { get; set; }
     public DateTime Created { get; set; }
 }

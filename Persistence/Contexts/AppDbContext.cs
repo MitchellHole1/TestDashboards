@@ -28,10 +28,9 @@ public class AppDbContext : DbContext
         
         builder.Entity<TestRun>().HasData
         (
-            new TestRun { Id = 1, Build = "abcd123", TestType = "API", Duration = 123, Link = "test.com"}, // Id set manually due to in-memory provider
-            new TestRun { Id = 2, Build = "abcd124", TestType = "API", Duration = 125, Link = "test.com"},
-            new TestRun { Id = 3, Build = "abcd125", TestType = "API", Duration = 125, Link = "google.ca"},
-            new TestRun { Id = 4, Build = "abcd126", TestType = "API", Duration = 0, Link = "google.ca"}
+            new TestRun { Id = 1, Build = "abcd123", TestType = "API", Duration = 53.12, Link = "test.com", Created = new DateTime(2023, 9, 11, 14, 10, 12)}, // Id set manually due to in-memory provider
+            new TestRun { Id = 2, Build = "abcd124", TestType = "API", Duration = 60.8, Link = "test.com", Created = new DateTime(2023, 9, 11, 18, 19, 42)},
+            new TestRun { Id = 3, Build = "abcd125", TestType = "API", Duration = 32.1, Link = "google.ca", Created = new DateTime(2023, 9, 12, 7, 49, 8)}
         );
         
         builder.Entity<TestCase>().ToTable("TestCases");
@@ -44,12 +43,8 @@ public class AppDbContext : DbContext
         
         builder.Entity<TestCase>().HasData
         (
-            new TestCase() { Id = 1, TestName = "GetAllItems", TestClass = "ItemsHappyPath"}, // Id set manually due to in-memory provider
-            new TestCase() { Id = 2, TestName = "GetItem", TestClass = "ItemsHappyPath"},
-            new TestCase() { Id = 3, TestName = "UpdateItem", TestClass = "ItemsHappyPath"},
-            new TestCase() { Id = 4, TestName = "DeleteItem", TestClass = "ItemsHappyPath"},
-            new TestCase() { Id = 5, TestName = "CreateCommerceOpportunity", TestClass = "E2E.CommerceOpportunitiesApiTest"},
-            new TestCase() { Id = 6, TestName = "GetCommerceOpportunities", TestClass = "E2E.CommerceOpportunitiesApiTest"}
+            new TestCase() { Id = 1, TestName = "CreateCommerceOpportunity", TestClass = "E2E.CommerceOpportunitiesApiTest"},
+            new TestCase() { Id = 2, TestName = "GetCommerceOpportunities", TestClass = "E2E.CommerceOpportunitiesApiTest"}
 
         );
         
@@ -63,18 +58,12 @@ public class AppDbContext : DbContext
 
         builder.Entity<TestResult>().HasData
         (
-            new TestResult() { Id = 1, TestRunId = 1, TestCaseId = 1, Passed = true, Duration = 3}, // Id set manually due to in-memory provider
-            new TestResult() { Id = 2, TestRunId = 1, TestCaseId = 2, Passed = true, Duration = 4},
-            new TestResult() { Id = 3, TestRunId = 1, TestCaseId = 3, Passed = true, Duration = 4},
-            new TestResult() { Id = 4, TestRunId = 1, TestCaseId = 4, Passed = true, Duration = 3},
-            new TestResult() { Id = 5, TestRunId = 2, TestCaseId = 1, Passed = true, Duration = 4},
-            new TestResult() { Id = 6, TestRunId = 2, TestCaseId = 2, Passed = true, Duration = 2},
-            new TestResult() { Id = 7, TestRunId = 2, TestCaseId = 3, Passed = true, Duration = 4},
-            new TestResult() { Id = 8, TestRunId = 2, TestCaseId = 4, Passed = true, Duration = 1},
-            new TestResult() { Id = 9, TestRunId = 3, TestCaseId = 1, Passed = false, Duration = 1},
-            new TestResult() { Id = 10, TestRunId = 3, TestCaseId = 2, Passed = true, Duration = 4},
-            new TestResult() { Id = 11, TestRunId = 3, TestCaseId = 3, Passed = true, Duration = 6},
-            new TestResult() { Id = 12, TestRunId = 3, TestCaseId = 4, Passed = false, Duration = 3}
+            new TestResult() { Id = 1, TestRunId = 1, TestCaseId = 1, Passed = true, Duration = 0.5}, // Id set manually due to in-memory provider
+            new TestResult() { Id = 2, TestRunId = 1, TestCaseId = 2, Passed = true, Duration = 0.224},
+            new TestResult() { Id = 3, TestRunId = 2, TestCaseId = 1, Passed = true, Duration = 0.931},
+            new TestResult() { Id = 4, TestRunId = 2, TestCaseId = 2, Passed = true, Duration = 0.32},
+            new TestResult() { Id = 5, TestRunId = 3, TestCaseId = 1, Passed = false, Duration = 0.48},
+            new TestResult() { Id = 6, TestRunId = 3, TestCaseId = 2, Passed = true, Duration = 0.33333333333}
         );      
         
         builder.Entity<TestBug>().ToTable("TestBugs");
@@ -94,8 +83,7 @@ public class AppDbContext : DbContext
         
         builder.Entity<TestResultBug>().HasData
         (
-            new TestResultBug() { Id = 1, TestResultId = 12, TestBugId = 1},
-            new TestResultBug() { Id = 2, TestResultId = 12, TestBugId = 2}
+            new TestResultBug() { Id = 1, TestResultId = 5, TestBugId = 1}
         );
 
         builder.Entity<TestMedia>().ToTable("TestMedia");

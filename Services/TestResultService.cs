@@ -162,7 +162,7 @@ public class TestResultService : ITestResultService
             foreach (var result in results) { 
                 var temp = new TestResult
                 {
-                    Duration = (int) float.Parse(result.Attribute("time")!.Value),
+                    Duration = double.Parse(result.Attribute("time")!.Value),
                     Passed = !result.Descendants("failure").Any(),
                     TestRunId = id
                 };

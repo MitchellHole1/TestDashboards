@@ -75,8 +75,7 @@ public class TestRunService : ITestRunService
 
         try
         {
-            var testRunDuration = float.Parse(testResults.Attributes("time").FirstOrDefault().Value);
-            existingTestRun.Duration = (int) testRunDuration;
+            existingTestRun.Duration = double.Parse(testResults.Attributes("time").FirstOrDefault().Value);
             _testRunRepository.Update(existingTestRun);
             var saveTestResultsResponse = await _testResultService.UploadResults(id, testResults);
             if (!saveTestResultsResponse.Success)

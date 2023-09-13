@@ -7,5 +7,5 @@ public class SaveTestResultResource
     [Required]
     public bool Passed { get; set; }
 
-    public int Duration { get; set; }
+    public double Duration { get; set; }
 }

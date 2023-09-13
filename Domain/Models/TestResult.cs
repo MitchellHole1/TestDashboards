@@ -3,7 +3,7 @@ namespace TestDashboard.Domain.Models;
 public class TestResult : AuditableEntity
 {
     public bool Passed { get; set; }
-    public int Duration { get; set; }
+    public double Duration { get; set; }
     
     public int TestRunId { get; set; }
     public TestRun TestRun { get; set; }

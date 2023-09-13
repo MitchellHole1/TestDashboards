@@ -86,4 +86,14 @@ public class TestRunController : Controller
         
         return Ok();
     }
+    
+    [HttpPost("{id}/upload-results-file")]
+    public async Task<IActionResult> UploadResults(int id, IFormFile file)
+    {
+        // To Do: Handle when a file is sent as form-data
+        string fileName = file.Name;
+        
+        Console.WriteLine("Filename: " + fileName);
+        return Ok();
+    }
 }
