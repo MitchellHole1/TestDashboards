@@ -6,6 +6,7 @@ public interface ITestResultRepository
 {
     Task<IEnumerable<TestResult>> ListAsync();
     Task AddAsync(TestResult testResult);
+    Task AddRangeAsync(List<TestResult> testResults);
     Task<TestResult> FindByIdAsync(int id);
     void Update(TestResult testResult);
     Task<IEnumerable<TestResult>> FindByTestRunId(int testRunId);

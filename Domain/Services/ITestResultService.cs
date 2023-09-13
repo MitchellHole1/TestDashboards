@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using TestDashboard.Domain.Models;
 using TestDashboard.Domain.Services.Communication;
 
@@ -13,4 +14,5 @@ public interface ITestResultService
     Task<SaveTestResultResponse> DeleteAsync(int id);
     Task<SaveTestResultResponse> SaveTestResultBugAsync(TestResultBug testResultBug);
     Task<SaveTestResultResponse>  DeleteTestResultBugAsync(int testResultId, int testBugId);
+    Task<SaveTestResultsResponse>  UploadResults(int testRunId, XElement testResults);
 }

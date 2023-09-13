@@ -1,19 +1,21 @@
+using System.Xml.Linq;
 using TestDashboard.Domain.Models;
 using TestDashboard.Domain.Repositories;
 using TestDashboard.Domain.Services;
 using TestDashboard.Domain.Services.Communication;
-using TestDashboard.Resources;
 
 namespace TestDashboard.Services;
 
 public class TestRunService : ITestRunService
 {
     private readonly ITestRunRepository _testRunRepository;
+    private readonly ITestResultService _testResultService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public TestRunService(ITestRunRepository testRunRepository, IUnitOfWork unitOfWork)
+    public TestRunService(ITestRunRepository testRunRepository, ITestResultService testResultService, IUnitOfWork unitOfWork)
     {
         _testRunRepository = testRunRepository;
+        _testResultService = testResultService;
         _unitOfWork = unitOfWork;
     }
 
@@ -63,4 +65,32 @@ public class TestRunService : ITestRunService
             return new SaveTestRunResponse($"An error occurred when updating the testrun: {ex.Message}");
         }
     }
+
+    public async Task<SaveTestRunResponse> UploadResults(int id, XElement testResults)
+    {
+        var existingTestRun = await _testRunRepository.FindByIdAsync(id);
+
+        if (existingTestRun == null)
+            return new SaveTestRunResponse("Testrun not found.");
+
+        try
+        {
+            var testRunDuration = float.Parse(testResults.Attributes("time").FirstOrDefault().Value);
+            existingTestRun.Duration = (int) testRunDuration;
+            _testRunRepository.Update(existingTestRun);
+            var saveTestResultsResponse = await _testResultService.UploadResults(id, testResults);
+            if (!saveTestResultsResponse.Success)
+            {
+                return new SaveTestRunResponse("Failed uploading results: " + saveTestResultsResponse.Message);
+            }
+            await _unitOfWork.CompleteAsync();
+            return new SaveTestRunResponse(existingTestRun);
+        }
+        catch (Exception ex)
+        {
+            // Do some logging stuff
+            return new SaveTestRunResponse($"An error occurred when uploading testresults: {ex.Message}");
+        }
+    }
+
 }

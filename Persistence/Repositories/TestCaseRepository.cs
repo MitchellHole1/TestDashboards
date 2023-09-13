@@ -21,6 +21,11 @@ public class TestCaseRepository: BaseRepository, ITestCaseRepository
         return await _context.TestCases.FindAsync(id);
     }
     
+    public async Task<TestCase> FindByNameAndClassNameAsync(string testName, string className)
+    {
+        return await _context.TestCases.Where(p => p.TestName == testName && p.TestClass == className).FirstOrDefaultAsync();
+    }
+    
     public async Task AddAsync(TestCase testCase)
     {
         await _context.TestCases.AddAsync(testCase);

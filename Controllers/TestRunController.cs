@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System.Xml.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TestDashboard.Domain.Models;
@@ -73,5 +73,17 @@ public class TestRunController : Controller
         var resources = _mapper.Map<IEnumerable<TestResult>, IEnumerable<TestResultResource>>(testResults);
 
         return resources;
+    }
+
+    [HttpPost("{id}/upload-results")]
+    [Consumes("application/xml")]
+    public async Task<IActionResult> UploadResults(int id, [FromBody] XElement testResults)
+    {
+        var result = await _testRunService.UploadResults(id, testResults);
+        
+        if (!result.Success)
+            return BadRequest(result.Message);
+        
+        return Ok();
     }
 }

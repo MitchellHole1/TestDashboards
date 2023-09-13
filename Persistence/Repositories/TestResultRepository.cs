@@ -21,6 +21,11 @@ public class TestResultRepository: BaseRepository, ITestResultRepository
         await _context.TestResults.AddAsync(testResult);
     }
     
+    public async Task AddRangeAsync(List<TestResult> testResults)
+    {
+        await _context.TestResults.AddRangeAsync(testResults);
+    }
+    
     public async Task<TestResult> FindByIdAsync(int id)
     {
         return await _context.TestResults.Include(p => p.TestResultBugs).ThenInclude(q => q.TestBug).FirstOrDefaultAsync(i => i.Id == id);

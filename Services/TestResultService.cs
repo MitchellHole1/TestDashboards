@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using TestDashboard.Domain.Models;
 using TestDashboard.Domain.Repositories;
 using TestDashboard.Domain.Services;
@@ -152,5 +153,43 @@ public class TestResultService : ITestResultService
             return new SaveTestResultResponse($"An error occurred when adding the testbug: {ex.Message}");
         }
     }
-    
+
+    public async Task<SaveTestResultsResponse>  UploadResults(int id, XElement testResults)
+    {
+        var results = testResults.Descendants("testcase");
+        List<TestResult> savedResults = new List<TestResult>();
+        try {
+            foreach (var result in results) { 
+                var temp = new TestResult
+                {
+                    Duration = (int) float.Parse(result.Attribute("time")!.Value),
+                    Passed = !result.Descendants("failure").Any(),
+                    TestRunId = id
+                };
+                var className = result.Attribute("classname")!.Value;
+                var testName = result.Attribute("name")!.Value;
+                testName = testName.Replace(className + ".", "");
+
+                var testCase = await _testCaseRepository.FindByNameAndClassNameAsync(testName, className);
+                if (testCase != null)
+                {
+                    temp.TestCaseId = testCase.Id;
+                    savedResults.Add(temp);
+                }
+                else
+                {
+                    return new SaveTestResultsResponse("Invalid testcase: " + className + "-" + testName);
+                }
+            }
+
+            await _testResultRepository.AddRangeAsync(savedResults);
+            await _unitOfWork.CompleteAsync();
+        }
+        catch (Exception ex)
+        {
+            return new SaveTestResultsResponse($"An error occurred when uploading the testresults: {ex.Message}");
+        }
+        return new SaveTestResultsResponse(savedResults);
+    }
+
 }
