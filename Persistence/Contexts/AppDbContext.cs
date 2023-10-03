@@ -5,11 +5,11 @@ namespace TestDashboard.Persistence.Contexts;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<TestType> TestTypes { get; set; }
     public DbSet<TestRun> TestRuns { get; set; }
     public DbSet<TestCase> TestCases { get; set; }
     public DbSet<TestResult> TestResults { get; set; }
     public DbSet<TestBug> TestBugs { get; set; }
-    
     public DbSet<TestResultBug> TestResultBugs { get; set; }
     public DbSet<TestMedia> TestMedia { get; set; }
     
@@ -18,6 +18,17 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<TestType>().ToTable("TestType");
+        builder.Entity<TestType>().HasKey(p => p.Id);
+        builder.Entity<TestType>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<TestType>().Property(p => p.Name).IsRequired().HasMaxLength(15);
+        builder.Entity<TestType>().HasIndex(p => p.Name).IsUnique();
+
+        builder.Entity<TestType>().HasData(
+            new TestType { Id = 1, Name = "API"},
+            new TestType { Id = 2, Name = "UI"}
+        );
         
         builder.Entity<TestRun>().ToTable("TestRuns");
         builder.Entity<TestRun>().HasKey(p => p.Id);
@@ -43,8 +54,8 @@ public class AppDbContext : DbContext
         
         builder.Entity<TestCase>().HasData
         (
-            new TestCase() { Id = 1, TestName = "CreateCommerceOpportunity", TestClass = "E2E.CommerceOpportunitiesApiTest"},
-            new TestCase() { Id = 2, TestName = "GetCommerceOpportunities", TestClass = "E2E.CommerceOpportunitiesApiTest"}
+            new TestCase() { Id = 1, TestName = "Get Commerce Opportunities", TestClass = "E2E.Tests.RuntimeCommerceOpportunitiesTests"},
+            new TestCase() { Id = 2, TestName = "ComOp Created In ComOp Service Is Retrieved From Runtime Service", TestClass = "E2E.Tests.EndToEndCommerceOpportunitiesTests"}
 
         );
         

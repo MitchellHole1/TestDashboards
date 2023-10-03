@@ -11,9 +11,9 @@ public class TestRunRepository: BaseRepository, ITestRunRepository
     {
     }
 
-    public async Task<IEnumerable<TestRun>> ListAsync()
+    public async Task<IEnumerable<TestRun>> ListAsync(string testType)
     {
-        return await _context.TestRuns.OrderByDescending(i => i.Id).Take(20).ToListAsync();
+        return await _context.TestRuns.Where(p => p.TestType == testType || testType == null).OrderByDescending(i => i.Id).Take(20).ToListAsync();
     }
     
     public async Task<TestRun> FindByIdAsync(int id)

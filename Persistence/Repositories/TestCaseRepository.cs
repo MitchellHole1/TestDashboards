@@ -11,7 +11,7 @@ public class TestCaseRepository: BaseRepository, ITestCaseRepository
     {
     }
 
-    public async Task<IEnumerable<TestCase>> ListAsync()
+    public async Task<IEnumerable<TestCase>> ListAsync(string testType)
     {
         return await _context.TestCases.ToListAsync();
     }

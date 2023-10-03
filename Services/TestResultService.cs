@@ -163,12 +163,14 @@ public class TestResultService : ITestResultService
                 var temp = new TestResult
                 {
                     Duration = double.Parse(result.Attribute("time")!.Value),
-                    Passed = !result.Descendants("failure").Any(),
+                    Passed = !result.Descendants("failure").Any() && !result.Descendants("error").Any(),
                     TestRunId = id
                 };
                 var className = result.Attribute("classname")!.Value;
                 var testName = result.Attribute("name")!.Value;
                 testName = testName.Replace(className + ".", "");
+                Console.WriteLine("Classname: " + className);
+                Console.WriteLine("Testname: " + testName);
 
                 var testCase = await _testCaseRepository.FindByNameAndClassNameAsync(testName, className);
                 if (testCase != null)
@@ -178,7 +180,15 @@ public class TestResultService : ITestResultService
                 }
                 else
                 {
-                    return new SaveTestResultsResponse("Invalid testcase: " + className + "-" + testName);
+                    var newTestCase = new TestCase
+                    {
+                        TestName = testName,
+                        TestClass = className
+                    };
+                    await _testCaseRepository.AddAsync(newTestCase);
+                    temp.TestCaseId = newTestCase.Id;
+                    savedResults.Add(temp);
+                    //return new SaveTestResultsResponse("Invalid testcase: " + className + "-" + testName);
                 }
             }
 

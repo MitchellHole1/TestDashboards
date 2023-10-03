@@ -16,9 +16,9 @@ public class TestCaseService : ITestCaseService
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<IEnumerable<TestCase>> ListAsync()
+    public async Task<IEnumerable<TestCase>> ListAsync(Query q)
     {
-        return await _testCaseRepository.ListAsync();
+        return await _testCaseRepository.ListAsync(q.TestType);
     }
     
     public async Task<SaveTestCaseResponse> SaveAsync(TestCase testCase)

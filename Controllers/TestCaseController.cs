@@ -20,9 +20,11 @@ public class TestCaseController : Controller
     }
     
     [HttpGet]
-    public async Task<IEnumerable<TestCaseResource>> GetAllAsync()
+    public async Task<IEnumerable<TestCaseResource>> GetAllAsync([FromQuery] QueryResource testCaseQuery)
     {
-        var testCases = await _testCaseService.ListAsync();
+        var query = _mapper.Map<Query>(testCaseQuery);
+
+        var testCases = await _testCaseService.ListAsync(query);
         var resources = _mapper.Map<IEnumerable<TestCase>, IEnumerable<TestCaseResource>>(testCases);
 
         return resources;

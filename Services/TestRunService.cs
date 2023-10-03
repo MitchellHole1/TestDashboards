@@ -21,7 +21,7 @@ public class TestRunService : ITestRunService
 
     public async Task<IEnumerable<TestRun>> ListAsync(Query q)
     {
-        return await _testRunRepository.ListAsync();
+        return await _testRunRepository.ListAsync(q.TestType);
     }
     
     public async Task<SaveTestRunResponse> SaveAsync(TestRun testRun)

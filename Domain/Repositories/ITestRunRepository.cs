@@ -4,7 +4,7 @@ namespace TestDashboard.Domain.Repositories;
 
 public interface ITestRunRepository
 {
-    Task<IEnumerable<TestRun>> ListAsync();
+    Task<IEnumerable<TestRun>> ListAsync(string testType);
     Task AddAsync(TestRun testRun);
     Task<TestRun> FindByIdAsync(int id);
     void Update(TestRun testRun);
