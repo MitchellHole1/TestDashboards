@@ -18,11 +18,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>((sp, options) =>
 {
-    //options.UseNpgsql("Server=localhost;Port=5432;Database=myDataBase;User Id=mitchell.hole;Password=LiveSizeBird1!;");
+    //options.UseNpgsql("Server=localhost;Port=5432;Database=myDataBase;User Id=mitchell.hole;Password=sample;");
     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-    options.UseInMemoryDatabase("supermarket-api-in-memory");
+    options.UseInMemoryDatabase("testdashboard-api-in-memory");
 
 });
+
 builder.Services.AddScoped<ITestRunRepository, TestRunRepository>();
 builder.Services.AddScoped<ITestRunService, TestRunService>();
 builder.Services.AddScoped<ITestCaseRepository, TestCaseRepository>();
@@ -35,6 +36,8 @@ builder.Services.AddScoped<ITestResultBugRepository, TestResultBugRepository>();
 builder.Services.AddScoped<ITestResultBugService, TestResultBugService>();
 builder.Services.AddScoped<ITestMediaRepository, TestMediaRepository>();
 builder.Services.AddScoped<ITestMediaService, TestMediaService>();
+builder.Services.AddScoped<ITestTypeRepository, TestTypeRepository>();
+builder.Services.AddScoped<ITestTypeService, TestTypeService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
 builder.Services.AddTransient<IDateTime, DateTimeService>();
