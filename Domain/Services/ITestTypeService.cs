@@ -7,5 +7,5 @@ public interface ITestTypeService
 {
     Task<IEnumerable<TestType>> ListAsync();
     Task<SaveTestTypeResponse> SaveAsync(TestType testType);
-
+    Task<SaveTestTypeResponse> GetByNameAsync(string name);
 }

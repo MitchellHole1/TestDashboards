@@ -21,6 +21,16 @@ public class TestTypeService : ITestTypeService
         return await _testTypeRepository.ListAsync();
     }
     
+    public async Task<SaveTestTypeResponse> GetByNameAsync(string name)
+    {
+        var TestType = await _testTypeRepository.FindByNameAsync(name);
+
+        if (TestType == null)
+            return new SaveTestTypeResponse("Testtype not found.");
+        
+        return new SaveTestTypeResponse(TestType);
+    }
+    
     public async Task<SaveTestTypeResponse> SaveAsync(TestType testType)
     {
         try

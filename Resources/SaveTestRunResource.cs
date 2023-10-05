@@ -14,7 +14,7 @@ public class SaveTestRunResource
     
     [Required]
     [MaxLength(30)]
-    public string TestType { get; set; }
+    public string TestTypeName { get; set; }
     
     public double Duration { get; set; }
 }

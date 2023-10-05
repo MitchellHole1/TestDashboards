@@ -10,12 +10,15 @@ public class TestRunService : ITestRunService
 {
     private readonly ITestRunRepository _testRunRepository;
     private readonly ITestResultService _testResultService;
+    private readonly ITestTypeService _testTypeService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public TestRunService(ITestRunRepository testRunRepository, ITestResultService testResultService, IUnitOfWork unitOfWork)
+    public TestRunService(ITestRunRepository testRunRepository, ITestResultService testResultService, 
+        ITestTypeService testTypeService, IUnitOfWork unitOfWork)
     {
         _testRunRepository = testRunRepository;
         _testResultService = testResultService;
+        _testTypeService = testTypeService;
         _unitOfWork = unitOfWork;
     }
 
@@ -26,6 +29,12 @@ public class TestRunService : ITestRunService
     
     public async Task<SaveTestRunResponse> SaveAsync(TestRun testRun)
     {
+        var existingTestType = await _testTypeService.GetByNameAsync(testRun.TestTypeName);
+        if (!existingTestType.Success)
+        {
+            return new SaveTestRunResponse("Testtype not found.");
+        }
+
         try
         {
             await _testRunRepository.AddAsync(testRun);
@@ -50,7 +59,7 @@ public class TestRunService : ITestRunService
         existingTestRun.Build = testRun.Build;
         existingTestRun.Link = testRun.Link;
         existingTestRun.Duration = testRun.Duration;
-        existingTestRun.TestType = testRun.TestType;
+        existingTestRun.TestTypeName = testRun.TestTypeName;
 
         try
         {

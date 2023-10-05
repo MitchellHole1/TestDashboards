@@ -39,9 +39,9 @@ public class AppDbContext : DbContext
         
         builder.Entity<TestRun>().HasData
         (
-            new TestRun { Id = 1, Build = "abcd123", TestType = "API", Duration = 53.12, Link = "test.com", Created = new DateTime(2023, 9, 11, 14, 10, 12)}, // Id set manually due to in-memory provider
-            new TestRun { Id = 2, Build = "abcd124", TestType = "API", Duration = 60.8, Link = "test.com", Created = new DateTime(2023, 9, 11, 18, 19, 42)},
-            new TestRun { Id = 3, Build = "abcd125", TestType = "API", Duration = 32.1, Link = "google.ca", Created = new DateTime(2023, 9, 12, 7, 49, 8)}
+            new TestRun { Id = 1, Build = "abcd123", TestTypeName = "API", Duration = 53.12, Link = "test.com", Created = new DateTime(2023, 9, 11, 14, 10, 12)}, // Id set manually due to in-memory provider
+            new TestRun { Id = 2, Build = "abcd124", TestTypeName = "API", Duration = 60.8, Link = "test.com", Created = new DateTime(2023, 9, 11, 18, 19, 42)},
+            new TestRun { Id = 3, Build = "abcd125", TestTypeName = "API", Duration = 32.1, Link = "google.ca", Created = new DateTime(2023, 9, 12, 7, 49, 8)}
         );
         
         builder.Entity<TestCase>().ToTable("TestCases");
