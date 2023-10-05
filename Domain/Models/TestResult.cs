@@ -4,6 +4,7 @@ public class TestResult : AuditableEntity
 {
     public bool Passed { get; set; }
     public double Duration { get; set; }
+    public string? ErrorMessage { get; set; }
     
     public int TestRunId { get; set; }
     public TestRun TestRun { get; set; }

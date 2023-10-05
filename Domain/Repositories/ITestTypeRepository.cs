@@ -5,4 +5,5 @@ namespace TestDashboard.Domain.Repositories;
 public interface ITestTypeRepository
 {
     Task<IEnumerable<TestType>> ListAsync();
+    Task AddAsync(TestType testType);
 }

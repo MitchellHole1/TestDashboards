@@ -154,23 +154,23 @@ public class TestResultService : ITestResultService
         }
     }
 
-    public async Task<SaveTestResultsResponse>  UploadResults(int id, XElement testResults)
+    public async Task<SaveTestResultsResponse> UploadResults(int id, XElement testResults)
     {
         var results = testResults.Descendants("testcase");
         List<TestResult> savedResults = new List<TestResult>();
         try {
-            foreach (var result in results) { 
+            foreach (var result in results) {
                 var temp = new TestResult
                 {
                     Duration = double.Parse(result.Attribute("time")!.Value),
                     Passed = !result.Descendants("failure").Any() && !result.Descendants("error").Any(),
-                    TestRunId = id
+                    TestRunId = id,
+                    ErrorMessage = GetErrorMessage(result)
                 };
                 var className = result.Attribute("classname")!.Value;
                 var testName = result.Attribute("name")!.Value;
                 testName = testName.Replace(className + ".", "");
-                Console.WriteLine("Classname: " + className);
-                Console.WriteLine("Testname: " + testName);
+                Console.WriteLine("Error: " + temp.ErrorMessage);
 
                 var testCase = await _testCaseRepository.FindByNameAndClassNameAsync(testName, className);
                 if (testCase != null)
@@ -200,6 +200,22 @@ public class TestResultService : ITestResultService
             return new SaveTestResultsResponse($"An error occurred when uploading the testresults: {ex.Message}");
         }
         return new SaveTestResultsResponse(savedResults);
+    }
+
+    public string? GetErrorMessage(XElement result)
+    {
+        if (result.Descendants("failure").Any())
+        {
+            return result.Descendants("failure").First().Attribute("message")!.Value;
+        }
+        else if (result.Descendants("error").Any())
+        {
+            return result.Descendants("error").First().Attribute("message")!.Value;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

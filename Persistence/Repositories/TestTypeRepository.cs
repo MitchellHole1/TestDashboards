@@ -16,4 +16,8 @@ public class TestTypeRepository : BaseRepository, ITestTypeRepository
         return await _context.TestTypes.OrderBy(i => i.Id).ToListAsync();
     }
 
+    public async Task AddAsync(TestType testType)
+    {
+        await _context.TestTypes.AddAsync(testType);
+    }
 }
