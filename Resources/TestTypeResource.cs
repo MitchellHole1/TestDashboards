@@ -1,7 +1,0 @@
-namespace TestDashboard.Resources;
-
-public class TestTypeResource
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-}
