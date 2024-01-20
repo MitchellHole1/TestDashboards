@@ -18,10 +18,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>((sp, options) =>
 {
-    //options.UseNpgsql("Server=localhost;Port=5432;Database=myDataBase;User Id=mitchell.hole;Password=sample;");
+    if (!builder.Environment.IsEnvironment("Local"))
+    {
+        options.UseInMemoryDatabase("testdashboard-api-in-memory");
+    }
+    else
+    {
+        var connectionString = builder.Configuration.GetConnectionString("Postgres");
+        options.UseNpgsql(connectionString);
+    }
     options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-    options.UseInMemoryDatabase("testdashboard-api-in-memory");
-
 });
 
 builder.Services.AddScoped<ITestRunRepository, TestRunRepository>();

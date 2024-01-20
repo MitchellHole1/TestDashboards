@@ -1,0 +1,47 @@
+version: '3.4'
+
+networks:
+  testdash:
+    driver: bridge
+
+services:
+  test-dashboard-service:
+    image: mitch/testdashboard-service.api:${TAG:-latest}
+    depends_on:
+      test-dashboard-db:
+        condition: service_healthy
+    container_name: test-dashboard-service
+    ports:
+      - "5099:8080"
+    build:
+      context: ./Backend
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - ConnectionStrings__Postgres=host=test-dashboard-db;port=5432;database=testdashboards;username=postgres;password=password;Pooling=true;
+      - ASPNETCORE_ENVIRONMENT=Local
+    networks:
+      - testdash
+
+  test-dashboard-db:
+    image: postgres:15-bullseye
+    container_name: test-dashbaord-db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U postgres -d testdashboards
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSGTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=testdashboards
+    restart: always
+    volumes:
+      - test_dash_data:/var/lib/postgresql/data/
+    networks:
+      - testdash
+
+volumes:
+  test_dash_data:
