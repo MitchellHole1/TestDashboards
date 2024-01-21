@@ -5,6 +5,21 @@ networks:
     driver: bridge
 
 services:
+  test-dashboard-ui:
+    image: mitch/testdashboard.ui:${TAG:-latest}
+    depends_on:
+      test-dashboard-service:
+        condition: service_started
+    container_name: test-dashboard-ui
+    ports:
+      - "3000:80"
+    build:
+      context: ./UI
+      dockerfile: ./Dockerfile
+    restart: always
+    networks:
+      - testdash
+
   test-dashboard-service:
     image: mitch/testdashboard-service.api:${TAG:-latest}
     depends_on:
@@ -25,7 +40,7 @@ services:
 
   test-dashboard-db:
     image: postgres:15-bullseye
-    container_name: test-dashbaord-db
+    container_name: test-dashboard-db
     ports:
       - "5432:5432"
     healthcheck:
