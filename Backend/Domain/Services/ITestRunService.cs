@@ -10,5 +10,6 @@ public interface ITestRunService
     Task<IEnumerable<TestRun>> ListAsync(Query q);
     Task<SaveTestRunResponse> SaveAsync(TestRun testRun);
     Task<SaveTestRunResponse> UpdateAsync(int id, TestRun testRun);
+    Task<SaveTestRunResponse> DeleteAsync(int id);
     Task<SaveTestRunResponse> UploadResults(int id, XElement testResults);
 }

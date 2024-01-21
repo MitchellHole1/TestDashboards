@@ -8,4 +8,6 @@ public interface ITestRunRepository
     Task AddAsync(TestRun testRun);
     Task<TestRun> FindByIdAsync(int id);
     void Update(TestRun testRun);
+    void Remove(TestRun testRun);
+
 }

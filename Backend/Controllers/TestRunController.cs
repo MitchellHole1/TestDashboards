@@ -66,6 +66,17 @@ public class TestRunController : Controller
         return Ok(testRunResource);
     }
     
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        var result = await _testRunService.DeleteAsync(id);
+
+        if (!result.Success)
+            return BadRequest(result.Message);
+
+        return NoContent();
+    }
+    
     [HttpGet("{id}/testresults")]
     public async Task<IEnumerable<TestResultResource>> GetTestResultsByTestRunAsync(int id)
     {

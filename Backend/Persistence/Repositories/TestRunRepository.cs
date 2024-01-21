@@ -30,4 +30,9 @@ public class TestRunRepository: BaseRepository, ITestRunRepository
     {
         _context.TestRuns.Update(testRun);
     }
+    
+    public void Remove(TestRun testRun)
+    {
+        _context.TestRuns.Remove(testRun);
+    }
 }

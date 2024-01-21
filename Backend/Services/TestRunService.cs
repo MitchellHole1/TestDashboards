@@ -75,6 +75,27 @@ public class TestRunService : ITestRunService
         }
     }
 
+    public async Task<SaveTestRunResponse> DeleteAsync(int id)
+    {
+        var existingTestRun = await _testRunRepository.FindByIdAsync(id);
+
+        if (existingTestRun == null)
+            return new SaveTestRunResponse("Testrun not found.");
+        
+        try
+        {
+            _testRunRepository.Remove(existingTestRun);
+            await _unitOfWork.CompleteAsync();
+
+            return new SaveTestRunResponse(existingTestRun);
+        }
+        catch (Exception ex)
+        {
+            // Do some logging stuff
+            return new SaveTestRunResponse($"An error occurred when deleting the testrun: {ex.Message}");
+        }
+    }
+
     public async Task<SaveTestRunResponse> UploadResults(int id, XElement testResults)
     {
         var existingTestRun = await _testRunRepository.FindByIdAsync(id);
